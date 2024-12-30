@@ -1,12 +1,15 @@
 buildscript {
-    ext.kotlin_version = '1.9.22'
+    ext {
+        kotlin_version = '1.9.0' // Updated Kotlin version
+        agp_version = '8.1.0'   // Updated Android Gradle Plugin version
+    }
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath "com.android.tools.build:gradle:$agp_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -18,14 +21,18 @@ allprojects {
     }
 }
 
+// Centralize build output directories
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+
+// Ensure :app is evaluated first
 subprojects {
     project.evaluationDependsOn(':app')
 }
 
+// Define clean task
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
